@@ -1,0 +1,86 @@
+<div class="container jumbotron">
+<h1>
+  <span class="badge"><h3 title="Puntos posibles">{{puntosPosibles}}</h3></span>
+  seeder
+  <span class="badge red"><h3 title="Total rojas">{{numRojas}}</h3></span>
+</h1>
+<h1>
+{{currentBreak.total}}
+{{#if currentBreak.red}}
+<span class="badge red">{{currentBreak.red}}</span>
+{{/if}}
+{{#if currentBreak.yellow}}
+<span class="badge yellow">{{currentBreak.yellow}}</span>
+{{/if}}
+{{#if currentBreak.green}}
+<span class="badge green">{{currentBreak.green}}</span>
+{{/if}}
+{{#if currentBreak.brown}}
+<span class="badge brown">{{currentBreak.brown}}</span>
+{{/if}}
+{{#if currentBreak.blue}}
+<span class="badge blue">{{currentBreak.blue}}</span>
+{{/if}}
+{{#if currentBreak.pink}}
+<span class="badge pink">{{currentBreak.pink}}</span>
+{{/if}}
+{{#if currentBreak.black}}
+<span class="badge black">{{currentBreak.black}}</span>
+{{/if}}
+</h1>
+
+<div class="progress">
+  <div class="progress-bar progress-bar-default" role="progressbar"
+    aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+    style="width: {{breakPorcentaje}}%;">
+    {{currentBreak.total}}
+  </div>
+</div>
+
+
+<h1>
+  <div class="btn-toolbar">
+{{#unless tocaColor}}
+    <button type="button" class="btn badge red" {{action 'red'}} disabled={{quitaRojas}}>.</button>
+{{/unless}}
+{{#if tocaColor}}
+  {{#unless blackOut}}
+    <button type="button" class="btn badge black" {{action 'black'}}>.</button>
+  {{/unless}}
+  {{#unless pinkOut}}
+  <button type="button" class="btn badge pink" {{action 'pink'}}>.</button>
+  {{/unless}}
+  {{#unless blueOut}}
+    <button type="button" class="btn badge blue" {{action 'blue'}}>.</button>
+  {{/unless}}
+  {{#unless brownOut}}
+    <button type="button" class="btn badge brown" {{action 'brown'}}>.</button>
+  {{/unless}}
+  {{#unless greenOut}}
+    <button type="button" class="btn badge green" {{action 'green'}}>.</button>
+  {{/unless}}
+  {{#unless yellowOut}}
+    <button type="button" class="btn badge yellow" {{action 'yellow'}}>.</button>
+  {{/unless}}
+{{/if}}
+  </div>
+</h1>
+
+<div class="progress">
+  <div class="progress-bar progress-bar-info" role="progressbar"
+    aria-valuenow="60" aria-valuemin="0" aria-valuemax="147"
+    style="width: {{puntosPosiblesPorcentaje}}%;">
+    {{puntosPosibles}}
+  </div>
+</div>
+
+<br/>
+
+<button type="button" {{action 'cambiaTurno'}} class="btn {{if currentBreak.1UpActive 'btn-success'}}{{if currentBreak.2UpActive 'btn-info'}}">{{nombre1}}</button>
+<button type="button" {{action 'cambiaTurno'}} class="btn {{if activo2 'btn-success'}}{{if activo1 'btn-info'}}">{{nombre2}}</button>
+
+  <br/>
+
+
+</div>
+{{outlet}}
