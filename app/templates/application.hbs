@@ -1,11 +1,59 @@
 <div class="container jumbotron">
-<h1>
-  <span class="badge"><h3 title="Puntos posibles">{{puntosPosibles}}</h3></span>
-  seeder
-  <span class="badge red"><h3 title="Total rojas">{{numRojas}}</h3></span>
-</h1>
-<h1>
-{{currentBreak.total}}
+
+{{#if numFrames}}
+  {{#if currentBreak.player}}
+<h2>
+<button type="button" {{action 'cambiaTurno' "1"}} 
+class="btn _1Up">{{score._1UpName}}</button>
+ {{score._1UpCurrentFrame}} {{score._1UpFrames}} ({{numFrames}}) {{score._2UpFrames}} {{score._2UpCurrentFrame}} 
+<button type="button" {{action 'cambiaTurno' "2"}} 
+class="btn _2Up">{{score._2UpName}}</button>
+</h2>
+
+
+  {{else}}
+    {{input value=score._1UpName}} vs. {{input value=score._2UpName}} 
+  {{/if}}
+
+  <!--h2>
+  {{#if currentBreak.player}}
+    <span class="badge"><h3 title="Puntos posibles">{{puntosPosibles}}</h3></span>
+    ({{numFrames}})
+    <span class="badge red"><h3 title="Total rojas">{{numRojas}}</h3></span>
+  {{else}}
+    ({{numFrames}})
+  {{/if}}
+  </h2-->
+
+{{else}}
+
+  <p>¿A cuántos frames van?</p>
+    <div class="btn-toolbar">
+      {{#each numFramesOptions as |numero|}}
+<button type="button" {{action 'updateFrames' numero}} class="btn btn-info">{{numero}}</button>
+      {{/each}}
+      </div>
+
+
+{{/if}}
+
+
+
+
+{{#if currentBreak.player}}
+
+<h3>
+
+</h3>
+
+<div class="progress">
+{{#if currentBreak._1UpActive}}
+{{score._1UpName}}
+{{else}}
+{{score._2UpName}}
+{{/if}}
+ {{currentBreak.total}}
+
 {{#if currentBreak.red}}
 <span class="badge red">{{currentBreak.red}}</span>
 {{/if}}
@@ -27,11 +75,9 @@
 {{#if currentBreak.black}}
 <span class="badge black">{{currentBreak.black}}</span>
 {{/if}}
-</h1>
 
-<div class="progress">
   <div class="progress-bar progress-bar-default" role="progressbar"
-    aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+    aria-valuenow="60" aria-valuemin="0" aria-valuemax="147"
     style="width: {{breakPorcentaje}}%;">
     {{currentBreak.total}}
   </div>
@@ -74,12 +120,60 @@
   </div>
 </div>
 
-<br/>
+{{else}}
 
-<button type="button" {{action 'cambiaTurno'}} class="btn {{if currentBreak.1UpActive 'btn-success'}}{{if currentBreak.2UpActive 'btn-info'}}">{{nombre1}}</button>
-<button type="button" {{action 'cambiaTurno'}} class="btn {{if activo2 'btn-success'}}{{if activo1 'btn-info'}}">{{nombre2}}</button>
+    <br/><br/>
+    <div class="btn-toolbar">
+  {{#if score._1UpName}}
+<button type="button" {{action 'cambiaTurno' '1'}} class="btn btn-info">¿Empieza {{score._1UpName}}?</button>
+  {{/if}}
 
-  <br/>
+  {{#if score._2UpName}}
+<button type="button" {{action 'cambiaTurno' '2'}} class="btn btn-info">¿Empieza {{score._2UpName}}?</button>
+  {{/if}}
+    </div>
+
+{{/if}}
+
+
+{{#each breaks as |pastBreak|}}
+<div class="progress">
+  <div class="progress-bar progress-bar-info" role="progressbar"
+    aria-valuenow="60" aria-valuemin="0" aria-valuemax="147"
+    style="width: {{pastBreak.total}}%;">
+{{#if pastBreak._1UpActive}}
+{{score._1UpName}}
+{{else}}
+{{score._2UpName}}
+{{/if}}
+    {{pastBreak.total}}
+  </div>
+
+{{#if pastBreak.red}}
+<span class="badge red">{{pastBreak.red}}</span>
+{{/if}}
+{{#if pastBreak.yellow}}
+<span class="badge yellow">{{pastBreak.yellow}}</span>
+{{/if}}
+{{#if pastBreak.green}}
+<span class="badge green">{{pastBreak.green}}</span>
+{{/if}}
+{{#if pastBreak.brown}}
+<span class="badge brown">{{pastBreak.brown}}</span>
+{{/if}}
+{{#if pastBreak.blue}}
+<span class="badge blue">{{pastBreak.blue}}</span>
+{{/if}}
+{{#if pastBreak.pink}}
+<span class="badge pink">{{pastBreak.pink}}</span>
+{{/if}}
+{{#if pastBreak.black}}
+<span class="badge black">{{pastBreak.black}}</span>
+{{/if}}
+
+</div>
+
+{{/each}}
 
 
 </div>
