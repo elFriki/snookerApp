@@ -1,110 +1,77 @@
-<div class="container jumbotron">
-<div class="container-fluid">
+<div class="container">
+
 {{#if numFrames}}
   {{#if currentBreak.player}}
 
-<div class="btn-toolbar btn-toolbar-center _{{currentBreak.player}}Up">
-  <button class="btn btn-default _1Up" {{action 'cambiaTurno' "1"}}>{{score._1UpName}}</button>
-  <button class="btn btn-info">{{score._1UpCurrentFrame}}</button>
-  <button class="btn btn-info">{{score._1UpFrames}}</button>
-  <button class="btn btn-default _{{currentBreak.player}}Up">({{numFrames}})</button>
-  <button class="btn btn-info">{{score._2UpFrames}}</button>
-  <button class="btn btn-info">{{score._2UpCurrentFrame}}</button>
-  <button class="btn btn-default _2Up" {{action 'cambiaTurno' "2"}}>{{score._2UpName}}</button>
-</div>
-
+<header>
+    <nav class="actions">
+        <label {{action 'cambiaTurno' "1"}}>{{score._1UpName}}</label>
+        <label>{{score._1UpCurrentFrame}}</label>
+        <label>{{score._1UpFrames}}</label>
+        <label class="_{{currentBreak.player}}Up">({{numFrames}})</label>
+        <label>{{score._2UpFrames}}</label>
+        <label>{{score._2UpCurrentFrame}}</label>
+        <label {{action 'cambiaTurno' "2"}}>{{score._2UpName}}</label>
+    </nav>
+</header>
 
   {{else}}
-<div class="form-group">
-    {{input value=score._1UpName class="form-control _1Up" placeholder="Ronnie O'Sullivan"}}
-<div class="btn-toolbar">
 
-  {{#if score._1UpName}}
-    <button {{action 'cambiaTurno' '1'}} class="btn btn-success _1Up">¿Empieza {{score._1UpName}}?</button>
-  {{/if}}
+<section>
+  <article>
+    <nav class="actions">
+      {{#if score._1UpName}}
+      <label {{action 'cambiaTurno' '1'}}>¿Empieza {{score._1UpName}}?</label>
+      {{/if}}
+      <label>Vs.</label>
+      {{#if score._2UpName}}
+      <label {{action 'cambiaTurno' '2'}}>¿Empieza {{score._2UpName}}?</label>
+      {{/if}}
+    </nav>
+  </article>
 
-<span class="label"><h1>Vs.</h1></span>
-
-  {{#if score._2UpName}}
-    <button {{action 'cambiaTurno' '2'}} class="btn btn-success _2Up">¿Empieza {{score._2UpName}}?</button>
-  {{/if}}
-
-</div>
-    {{input value=score._2UpName class="form-control _2Up" placeholder="Mark Selby"}} 
-</div>
-
-
-
-
+  <article class="form-group">
+      {{input value=score._1UpName class="form-control" placeholder="Ronnie O'Sullivan"}}
+      {{input value=score._2UpName class="form-control" placeholder="Mark Selby"}}
+  </article>
+</section>
 
   {{/if}}
-
-
 
 {{else}}
 
-<nav>
-    <div class="btn-toolbar">
+<section>
+  <article>
       <p>¿A cuántos frames van?</p>
-      {{#each numFramesOptions as |numero|}}
-<button type="button" {{action 'updateFrames' numero}} class="btn btn-info">{{numero}}</button>
-      {{/each}}
-      </div>
-</nav>
+      <nav class="actions">
+        {{#each numFramesOptions as |numero|}}
+          <label for="{{numero}}" {{action 'updateFrames' numero}}>{{numero}}</label>
+        {{/each}}
+      </nav>
+  </article>
+</section>
 
 {{/if}}
-</div>
 
-<br/>
+
 
 {{#if currentBreak.player}}
 
-        <section>
-            <article>
+<section>
+  <article>
+
 {{#if currentBreak._1UpActive}}
-<input type="radio" name="switch-color" id="red" checked>
-<input type="radio" name="switch-color" id="cyan">
-<input type="radio" name="switch-color" id="lime">
+    <input type="radio" name="switch-color" id="red" checked>
+    <input type="radio" name="switch-color" id="lime">
 {{else}}
-<input type="radio" name="switch-color" id="red">
-<input type="radio" name="switch-color" id="cyan">
-<input type="radio" name="switch-color" id="lime" checked>
+    <input type="radio" name="switch-color" id="red">
+    <input type="radio" name="switch-color" id="lime" checked>
 {{/if}}
 
-                <div class="chart">
-                    <div class="bar bar-{{breakPorcentaje}} white">
-                        <div class="face top">
-                            <div class="growing-bar">
-{{#if currentBreak._1UpActive}}{{score._1UpName}}{{else}}{{score._2UpName}}{{/if}}
-                            </div>
-                        </div>
-                        <div class="face side-0">
-                            <div class="growing-bar"></div>
-                        </div>
-                        <div class="face floor">
-                            <div class="growing-bar">{{currentBreak.total}}</div>
-                        </div>
-                        <div class="face side-a"></div>
-                        <div class="face side-b"></div>
-                        <div class="face side-1">
-                            <div class="growing-bar"></div>
-                        </div>
-                    </div>
-                </div>
-                <!--p>{{breakPorcentaje}}</p-->
-                <!--nav class="actions">
-                    <label for="red">Red</label>
-                    <label for="cyan">Cyan</label>
-                    <label for="lime">Lime</label>
-                </nav-->
-            </article>
-</section>
-
-
-
-<div class="progress _{{currentBreak.player}}Up">
-
-
+    <div class="chart">
+        <div class="bar bar-{{breakPorcentaje}} lightGray">
+            <div class="face top">
+                <div class="growing-bar">
 {{#if currentBreak.red}}
 <span class="badge red">{{currentBreak.red}}</span>
 {{/if}}
@@ -127,61 +94,75 @@
 <span class="badge black">{{currentBreak.black}}</span>
 {{/if}}
 
-  <div class="progress-bar progress-bar-striped active" role="progressbar"
-    aria-valuenow="60" aria-valuemin="0" aria-valuemax="147"
-    style="width: {{breakPorcentaje}}%;">
-    {{currentBreak.total}}
-  </div>
-</div>
+                </div>
+            </div>
+            <div class="face side-0">
+                <div class="growing-bar"></div>
+            </div>
+            <div class="face floor">
+                <div class="growing-bar">{{currentBreak.total}}</div>
+            </div>
+            <div class="face side-a"></div>
+            <div class="face side-b"></div>
+            <div class="face side-1">
+                <div class="growing-bar"></div>
+            </div>
+        </div>
+    </div>
+  </article>
+</section>
 
+  <header>
+    <nav class="actions">
+      {{#unless tocaColor}}
+        <button type="button" class="btn badge red" {{action 'red'}} disabled={{quitaRojas}}>.</button>
+      {{/unless}}
+      {{#if tocaColor}}
+        {{#unless blackOut}}
+          <button type="button" class="btn badge black" {{action 'black'}}>.</button>
+        {{/unless}}
+        {{#unless pinkOut}}
+        <button type="button" class="btn badge pink" {{action 'pink'}}>.</button>
+        {{/unless}}
+        {{#unless blueOut}}
+          <button type="button" class="btn badge blue" {{action 'blue'}}>.</button>
+        {{/unless}}
+        {{#unless brownOut}}
+          <button type="button" class="btn badge brown" {{action 'brown'}}>.</button>
+        {{/unless}}
+        {{#unless greenOut}}
+          <button type="button" class="btn badge green" {{action 'green'}}>.</button>
+        {{/unless}}
+        {{#unless yellowOut}}
+          <button type="button" class="btn badge yellow" {{action 'yellow'}}>.</button>
+        {{/unless}}
+      {{/if}}
+    </nav>
+  </header>
 
-<h1>
-  <div class="btn-toolbar">
-{{#unless tocaColor}}
-    <button type="button" class="btn badge red" {{action 'red'}} disabled={{quitaRojas}}>.</button>
-{{/unless}}
-{{#if tocaColor}}
-  {{#unless blackOut}}
-    <button type="button" class="btn badge black" {{action 'black'}}>.</button>
-  {{/unless}}
-  {{#unless pinkOut}}
-  <button type="button" class="btn badge pink" {{action 'pink'}}>.</button>
-  {{/unless}}
-  {{#unless blueOut}}
-    <button type="button" class="btn badge blue" {{action 'blue'}}>.</button>
-  {{/unless}}
-  {{#unless brownOut}}
-    <button type="button" class="btn badge brown" {{action 'brown'}}>.</button>
-  {{/unless}}
-  {{#unless greenOut}}
-    <button type="button" class="btn badge green" {{action 'green'}}>.</button>
-  {{/unless}}
-  {{#unless yellowOut}}
-    <button type="button" class="btn badge yellow" {{action 'yellow'}}>.</button>
-  {{/unless}}
+<section>
+  <article>
+    <div class="progress">
+      <div class="progress-bar progress-bar-info" role="progressbar"
+        aria-valuenow="60" aria-valuemin="0" aria-valuemax="147"
+        style="width: {{puntosPosiblesPorcentaje}}%;">
+        {{puntosPosibles}}
+      </div>
+      <span class="badge red">{{numRojas}}</span>
+      <span class="badge yellow">1</span>
+      <span class="badge green">1</span>
+      <span class="badge brown">1</span>
+      <span class="badge blue">1</span>
+      <span class="badge pink">1</span>
+      <span class="badge black">1</span>
+    </div>
+  </article>
+
+</section>
 {{/if}}
-  </div>
-</h1>
 
-<div class="progress">
-  <div class="progress-bar progress-bar-info" role="progressbar"
-    aria-valuenow="60" aria-valuemin="0" aria-valuemax="147"
-    style="width: {{puntosPosiblesPorcentaje}}%;">
-    {{puntosPosibles}}
-  </div>
-  <span class="badge red">{{numRojas}}</span>
-  <span class="badge yellow">1</span>
-  <span class="badge green">1</span>
-  <span class="badge brown">1</span>
-  <span class="badge blue">1</span>
-  <span class="badge pink">1</span>
-  <span class="badge black">1</span>
-</div>
-
-
-{{/if}}
-
-
+<section>
+  <article>
 {{#each breaks as |pastBreak|}}
 <div class="progress">
   <div class="progress-bar progress-bar-info _{{pastBreak.player}}Up" role="progressbar"
@@ -213,12 +194,13 @@
 {{/if}}
 
 </div>
-
 {{/each}}
+</article>
+</section>
 
 
-</div>
 {{outlet}}
+</div>
 
 
 <!--div class="container">
@@ -353,4 +335,3 @@
                 </nav>
             </article>
         </section>
-    </div--> 
