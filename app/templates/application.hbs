@@ -1,58 +1,109 @@
 <div class="container jumbotron">
-
+<div class="container-fluid">
 {{#if numFrames}}
   {{#if currentBreak.player}}
-<h2>
-<button type="button" {{action 'cambiaTurno' "1"}} 
-class="btn _1Up">{{score._1UpName}}</button>
- {{score._1UpCurrentFrame}} {{score._1UpFrames}} ({{numFrames}}) {{score._2UpFrames}} {{score._2UpCurrentFrame}} 
-<button type="button" {{action 'cambiaTurno' "2"}} 
-class="btn _2Up">{{score._2UpName}}</button>
-</h2>
+
+<div class="btn-toolbar btn-toolbar-center _{{currentBreak.player}}Up">
+  <button class="btn btn-default _1Up" {{action 'cambiaTurno' "1"}}>{{score._1UpName}}</button>
+  <button class="btn btn-info">{{score._1UpCurrentFrame}}</button>
+  <button class="btn btn-info">{{score._1UpFrames}}</button>
+  <button class="btn btn-default _{{currentBreak.player}}Up">({{numFrames}})</button>
+  <button class="btn btn-info">{{score._2UpFrames}}</button>
+  <button class="btn btn-info">{{score._2UpCurrentFrame}}</button>
+  <button class="btn btn-default _2Up" {{action 'cambiaTurno' "2"}}>{{score._2UpName}}</button>
+</div>
 
 
   {{else}}
-    {{input value=score._1UpName}} vs. {{input value=score._2UpName}} 
+<div class="form-group">
+    {{input value=score._1UpName class="form-control _1Up" placeholder="Ronnie O'Sullivan"}}
+<div class="btn-toolbar">
+
+  {{#if score._1UpName}}
+    <button {{action 'cambiaTurno' '1'}} class="btn btn-success _1Up">¿Empieza {{score._1UpName}}?</button>
   {{/if}}
 
-  <!--h2>
-  {{#if currentBreak.player}}
-    <span class="badge"><h3 title="Puntos posibles">{{puntosPosibles}}</h3></span>
-    ({{numFrames}})
-    <span class="badge red"><h3 title="Total rojas">{{numRojas}}</h3></span>
-  {{else}}
-    ({{numFrames}})
+<span class="label"><h1>Vs.</h1></span>
+
+  {{#if score._2UpName}}
+    <button {{action 'cambiaTurno' '2'}} class="btn btn-success _2Up">¿Empieza {{score._2UpName}}?</button>
   {{/if}}
-  </h2-->
+
+</div>
+    {{input value=score._2UpName class="form-control _2Up" placeholder="Mark Selby"}} 
+</div>
+
+
+
+
+
+  {{/if}}
+
+
 
 {{else}}
 
-  <p>¿A cuántos frames van?</p>
+<nav>
     <div class="btn-toolbar">
+      <p>¿A cuántos frames van?</p>
       {{#each numFramesOptions as |numero|}}
 <button type="button" {{action 'updateFrames' numero}} class="btn btn-info">{{numero}}</button>
       {{/each}}
       </div>
-
+</nav>
 
 {{/if}}
+</div>
 
-
-
+<br/>
 
 {{#if currentBreak.player}}
 
-<h3>
-
-</h3>
-
-<div class="progress">
+        <section>
+            <article>
 {{#if currentBreak._1UpActive}}
-{{score._1UpName}}
+<input type="radio" name="switch-color" id="red" checked>
+<input type="radio" name="switch-color" id="cyan">
+<input type="radio" name="switch-color" id="lime">
 {{else}}
-{{score._2UpName}}
+<input type="radio" name="switch-color" id="red">
+<input type="radio" name="switch-color" id="cyan">
+<input type="radio" name="switch-color" id="lime" checked>
 {{/if}}
- {{currentBreak.total}}
+
+                <div class="chart">
+                    <div class="bar bar-{{breakPorcentaje}} white">
+                        <div class="face top">
+                            <div class="growing-bar">
+{{#if currentBreak._1UpActive}}{{score._1UpName}}{{else}}{{score._2UpName}}{{/if}}
+                            </div>
+                        </div>
+                        <div class="face side-0">
+                            <div class="growing-bar"></div>
+                        </div>
+                        <div class="face floor">
+                            <div class="growing-bar">{{currentBreak.total}}</div>
+                        </div>
+                        <div class="face side-a"></div>
+                        <div class="face side-b"></div>
+                        <div class="face side-1">
+                            <div class="growing-bar"></div>
+                        </div>
+                    </div>
+                </div>
+                <!--p>{{breakPorcentaje}}</p-->
+                <!--nav class="actions">
+                    <label for="red">Red</label>
+                    <label for="cyan">Cyan</label>
+                    <label for="lime">Lime</label>
+                </nav-->
+            </article>
+</section>
+
+
+
+<div class="progress _{{currentBreak.player}}Up">
+
 
 {{#if currentBreak.red}}
 <span class="badge red">{{currentBreak.red}}</span>
@@ -76,7 +127,7 @@ class="btn _2Up">{{score._2UpName}}</button>
 <span class="badge black">{{currentBreak.black}}</span>
 {{/if}}
 
-  <div class="progress-bar progress-bar-default" role="progressbar"
+  <div class="progress-bar progress-bar-striped active" role="progressbar"
     aria-valuenow="60" aria-valuemin="0" aria-valuemax="147"
     style="width: {{breakPorcentaje}}%;">
     {{currentBreak.total}}
@@ -118,34 +169,24 @@ class="btn _2Up">{{score._2UpName}}</button>
     style="width: {{puntosPosiblesPorcentaje}}%;">
     {{puntosPosibles}}
   </div>
+  <span class="badge red">{{numRojas}}</span>
+  <span class="badge yellow">1</span>
+  <span class="badge green">1</span>
+  <span class="badge brown">1</span>
+  <span class="badge blue">1</span>
+  <span class="badge pink">1</span>
+  <span class="badge black">1</span>
 </div>
 
-{{else}}
-
-    <br/><br/>
-    <div class="btn-toolbar">
-  {{#if score._1UpName}}
-<button type="button" {{action 'cambiaTurno' '1'}} class="btn btn-info">¿Empieza {{score._1UpName}}?</button>
-  {{/if}}
-
-  {{#if score._2UpName}}
-<button type="button" {{action 'cambiaTurno' '2'}} class="btn btn-info">¿Empieza {{score._2UpName}}?</button>
-  {{/if}}
-    </div>
 
 {{/if}}
 
 
 {{#each breaks as |pastBreak|}}
 <div class="progress">
-  <div class="progress-bar progress-bar-info" role="progressbar"
+  <div class="progress-bar progress-bar-info _{{pastBreak.player}}Up" role="progressbar"
     aria-valuenow="60" aria-valuemin="0" aria-valuemax="147"
     style="width: {{pastBreak.total}}%;">
-{{#if pastBreak._1UpActive}}
-{{score._1UpName}}
-{{else}}
-{{score._2UpName}}
-{{/if}}
     {{pastBreak.total}}
   </div>
 
@@ -178,3 +219,138 @@ class="btn _2Up">{{score._2UpName}}</button>
 
 </div>
 {{outlet}}
+
+
+<!--div class="container">
+        <header>
+            <h1>frame <strong>SNOOKER</strong> progress</h1>
+            <p>... a pretty liquid APP progress-bar.</p>
+        </header>
+        <section>
+            <article>
+                <input type="radio" name="switch-color" id="red" checked>
+                <input type="radio" name="switch-color" id="cyan">
+                <input type="radio" name="switch-color" id="lime">
+                <div class="chart">
+                    <div class="bar bar-75 white">
+                        <div class="face top">
+                            <div class="growing-bar"></div>
+                        </div>
+                        <div class="face side-0">
+                            <div class="growing-bar"></div>
+                        </div>
+                        <div class="face floor">
+                            <div class="growing-bar"></div>
+                        </div>
+                        <div class="face side-a"></div>
+                        <div class="face side-b"></div>
+                        <div class="face side-1">
+                            <div class="growing-bar"></div>
+                        </div>
+                    </div>
+                </div>
+                <p>Try another color :)</p>
+                <nav class="actions">
+                    <label for="red">Red</label>
+                    <label for="cyan">Cyan</label>
+                    <label for="lime">Lime</label>
+                </nav>
+            </article>
+            <article>
+                <input type="radio" name="switch-pos" id="pos-0">
+                <input type="radio" name="switch-pos" id="pos-1">
+                <input type="radio" name="switch-pos" id="pos-2" checked>
+                <input type="radio" name="switch-pos" id="pos-3">
+                <div class="chart">
+                    <div class="bar bar-30 white">
+                        <div class="face top">
+                            <div class="growing-bar"></div>
+                        </div>
+                        <div class="face side-0">
+                            <div class="growing-bar"></div>
+                        </div>
+                        <div class="face floor">
+                            <div class="growing-bar"></div>
+                        </div>
+                        <div class="face side-a"></div>
+                        <div class="face side-b"></div>
+                        <div class="face side-1">
+                            <div class="growing-bar"></div>
+                        </div>
+                    </div>
+                </div>
+                <p>Try another position :)</p>
+                <nav class="actions">
+                    <label for="pos-0">1/4</label>
+                    <label for="pos-1">2/4</label>
+                    <label for="pos-2">3/4</label>
+                    <label for="pos-3">Full</label>
+                </nav>
+            </article>
+            <article>
+                <input type="radio" name="exercises" id="exercise-1" checked>
+                <input type="radio" name="exercises" id="exercise-2">
+                <input type="radio" name="exercises" id="exercise-3">
+                <input type="radio" name="exercises" id="exercise-4">
+                <div class="chart grid">
+                    <div class="exercise second">
+                        <div class="bar bar-45 navy lightGray-face">
+                            <div class="face top">
+                                <div class="growing-bar"></div>
+                            </div>
+                            <div class="face side-0">
+                                <div class="growing-bar"></div>
+                            </div>
+                            <div class="face floor">
+                                <div class="growing-bar"></div>
+                            </div>
+                            <div class="face side-a"></div>
+                            <div class="face side-b"></div>
+                            <div class="face side-1">
+                                <div class="growing-bar"></div>
+                            </div>
+                        </div>
+                        <div class="bar bar-80 yellow lightGray-face">
+                            <div class="face top">
+                                <div class="growing-bar"></div>
+                            </div>
+                            <div class="face side-0">
+                                <div class="growing-bar"></div>
+                            </div>
+                            <div class="face floor">
+                                <div class="growing-bar"></div>
+                            </div>
+                            <div class="face side-a"></div>
+                            <div class="face side-b"></div>
+                            <div class="face side-1">
+                                <div class="growing-bar"></div>
+                            </div>
+                        </div>
+                        <div class="bar bar-60 red lightGray-face">
+                            <div class="face top">
+                                <div class="growing-bar"></div>
+                            </div>
+                            <div class="face side-0">
+                                <div class="growing-bar"></div>
+                            </div>
+                            <div class="face floor">
+                                <div class="growing-bar"></div>
+                            </div>
+                            <div class="face side-a"></div>
+                            <div class="face side-b"></div>
+                            <div class="face side-1">
+                                <div class="growing-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p><em>It's liquid</em>, so adding a bit of code you can make charts like this :P</p>
+                <nav class="actions">
+                    <label for="exercise-1">E-1</label>
+                    <label for="exercise-2">E-2</label>
+                    <label for="exercise-3">E-3</label>
+                    <label for="exercise-4">E-4</label>
+                </nav>
+            </article>
+        </section>
+    </div--> 

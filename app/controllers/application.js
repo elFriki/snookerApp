@@ -88,25 +88,25 @@ export default Ember.Controller.extend({
 	breakPorcentaje: Ember.computed('puntosPosibles', 'currentBreak',
 		function() {
 			const currentPercentaje = (this.get('currentBreak.total') * 100) / 147;
-			return currentPercentaje;
+			return Math.round(currentPercentaje);
 		}),
 
 	puntosPosiblesPorcentaje: Ember.computed('puntosPosibles', 'puntos1', 'puntos2',
 		function() {
 			const currentPercentaje = (this.get('puntosPosibles') * 100) / 147;
-			return currentPercentaje;
+			return Math.round(currentPercentaje);
 		}),
 
 	puntos1Porcentaje: Ember.computed('puntosPosibles', 'puntos1',
 		function() {
 			const currentPercentaje = (this.puntos1 * 100) / 147;
-			return currentPercentaje;
+			return Math.round(currentPercentaje);
 		}),
 
 	puntos2Porcentaje: Ember.computed('puntosPosibles', 'puntos2',
 		function() {
 			const currentPercentaje = (this.puntos2 * 100) / 147;
-			return currentPercentaje;
+			return Math.round(currentPercentaje);
 		}),
 
 	updateScore: function(points) {
@@ -171,7 +171,6 @@ export default Ember.Controller.extend({
 				this.set('currentBreak.black', (this.get('currentBreak.black') + 1));
 				this.set('currentBreak.total', (this.get('currentBreak.total') + 7));
 				this.updateScore(7);
-				this.toggleProperty('tocaColor');
 			},
 
 			cambiaTurno(playerSelected) {
@@ -179,10 +178,12 @@ export default Ember.Controller.extend({
 					let newBreak = this.get('Break').create();
 					this.set('currentBreak', newBreak);
 				} else {
-					let item = this.get('currentBreak');
-					this.get('breaks').addObject(item);
-					let newBreak = this.get('Break').create();
-					this.set('currentBreak', newBreak);
+					if (this.get('currentBreak.total') !== 0) {
+						let item = this.get('currentBreak');
+						this.get('breaks').addObject(item);
+						let newBreak = this.get('Break').create();
+						this.set('currentBreak', newBreak);
+					}
 				}
 
 				this.set('currentBreak.player', playerSelected);
