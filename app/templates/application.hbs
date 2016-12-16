@@ -4,71 +4,99 @@
   {{#if currentBreak.player}}
 
 <header>
+    <!--h1>frame <strong>SNOOKER</strong> progress</h1-->
+    <h3>&nbsp;</h3>
     <nav class="actions">
-        <label {{action 'cambiaTurno' "1"}}>{{score._1UpName}}</label>
-        <label>{{score._1UpCurrentFrame}}</label>
-        <label>{{score._1UpFrames}}</label>
-        <label class="_{{currentBreak.player}}Up">({{numFrames}})</label>
-        <label>{{score._2UpFrames}}</label>
-        <label>{{score._2UpCurrentFrame}}</label>
-        <label {{action 'cambiaTurno' "2"}}>{{score._2UpName}}</label>
+        <label {{action 'cambiaTurno' "1"}} class="_1Up">{{score._1UpName}}</label>
+        <label class="_1Up">{{score._1UpCurrentFrame}}</label>
+        <span>{{score._1UpFrames}}</span>
+        <span class="_{{currentBreak.player}}Up"><small>({{numFrames}})</small></span>
+        <span>{{score._2UpFrames}}</span>
+        <label class="_2Up">{{score._2UpCurrentFrame}}</label>
+        <label {{action 'cambiaTurno' "2"}} class="_2Up">{{score._2UpName}}</label>
     </nav>
 </header>
 
   {{else}}
 
-<section>
-  <article>
-    <nav class="actions">
-      {{#if score._1UpName}}
-      <label {{action 'cambiaTurno' '1'}}>¿Empieza {{score._1UpName}}?</label>
-      {{/if}}
-      <label>Vs.</label>
-      {{#if score._2UpName}}
-      <label {{action 'cambiaTurno' '2'}}>¿Empieza {{score._2UpName}}?</label>
-      {{/if}}
-    </nav>
-  </article>
-
-  <article class="form-group">
-      {{input value=score._1UpName class="form-control" placeholder="Ronnie O'Sullivan"}}
-      {{input value=score._2UpName class="form-control" placeholder="Mark Selby"}}
-  </article>
-</section>
+  <nav class="actions">
+    {{#if score._1UpName}}
+    <label {{action 'cambiaTurno' '1'}}>¿Empieza {{score._1UpName}}?</label>
+    {{/if}}
+    {{input value=score._1UpName class="form-control" placeholder="Ronnie O'Sullivan"}}
+    <label>Vs.</label>
+    {{input value=score._2UpName class="form-control" placeholder="Mark Selby"}}
+    {{#if score._2UpName}}
+    <label {{action 'cambiaTurno' '2'}}>¿Empieza {{score._2UpName}}?</label>
+    {{/if}}
+  </nav>
 
   {{/if}}
 
 {{else}}
 
-<section>
-  <article>
-      <p>¿A cuántos frames van?</p>
-      <nav class="actions">
-        {{#each numFramesOptions as |numero|}}
-          <label for="{{numero}}" {{action 'updateFrames' numero}}>{{numero}}</label>
-        {{/each}}
-      </nav>
-  </article>
-</section>
+    <h3>¿A cuántos frames van?</h3>
+    <nav class="actions">
+      {{#each numFramesOptions as |numero|}}
+        <label for="{{numero}}" {{action 'updateFrames' numero}}>{{numero}}</label>
+      {{/each}}
+    </nav>
 
 {{/if}}
-
-
 
 {{#if currentBreak.player}}
 
-<section>
-  <article>
 
-{{#if currentBreak._1UpActive}}
-    <input type="radio" name="switch-color" id="red" checked>
-    <input type="radio" name="switch-color" id="lime">
+<nav class="actions">
+{{#if soloColor}}
+  {{#unless blackOut}}
+    <label class="black" {{action 'black' '1'}}>1</label>
+  {{/unless}}
+  {{#unless pinkOut}}
+  <label class="pink" {{action 'pink'}}>1</label>
+  {{/unless}}
+  {{#unless blueOut}}
+    <label class="blue" {{action 'blue'}}>1</label>
+  {{/unless}}
+  {{#unless brownOut}}
+    <label class="brown" {{action 'brown'}}>1</label>
+  {{/unless}}
+  {{#unless greenOut}}
+    <label class="green" {{action 'green'}}>1</label>
+  {{/unless}}
+  {{#unless yellowOut}}
+    <label class="yellow" {{action 'yellow'}}>1</label>
+  {{/unless}}
+    <label class="white" {{action 'white'}}>¿?</label>
 {{else}}
-    <input type="radio" name="switch-color" id="red">
-    <input type="radio" name="switch-color" id="lime" checked>
+  {{#if numRojas}}
+    <label class="red" {{action 'red'}}>{{numRojas}}</label>
+  {{/if}}
+  <label class="black" {{action 'black'}}>..</label>
+  <label class="pink" {{action 'pink'}}>..</label>
+  <label class="blue" {{action 'blue'}}>..</label>
+  <label class="brown" {{action 'brown'}}>..</label>
+  <label class="green" {{action 'green'}}>..</label>
+  <label class="yellow" {{action 'yellow'}}>..</label>
+  <label class="white" {{action 'white'}}>¿?</label>
 {{/if}}
 
-    <div class="chart">
+</nav>
+
+
+
+<section>
+  <article>
+{{#if puntosPosibles}}
+{{#if currentBreak._1UpActive}}
+    <input type="radio" name="olor" id="red" checked>
+    <input type="radio" name="olor" id="lime">
+{{else}}
+    <input type="radio" name="olor" id="red">
+    <input type="radio" name="olor" id="lime" checked>
+{{/if}}
+
+    <div class="chart navy">
         <div class="bar bar-{{breakPorcentaje}} lightGray">
             <div class="face top">
                 <div class="growing-bar">
@@ -94,13 +122,13 @@
 <span class="badge black">{{currentBreak.black}}</span>
 {{/if}}
 
-                </div>
+                </div>{{currentBreak.total}}
             </div>
             <div class="face side-0">
                 <div class="growing-bar"></div>
             </div>
             <div class="face floor">
-                <div class="growing-bar">{{currentBreak.total}}</div>
+                <div class="growing-bar"></div>
             </div>
             <div class="face side-a"></div>
             <div class="face side-b"></div>
@@ -109,38 +137,51 @@
             </div>
         </div>
     </div>
+{{/if}}
   </article>
 </section>
 
-  <header>
-    <nav class="actions">
-      {{#unless tocaColor}}
-        <button type="button" class="btn badge red" {{action 'red'}} disabled={{quitaRojas}}>.</button>
-      {{/unless}}
-      {{#if tocaColor}}
-        {{#unless blackOut}}
-          <button type="button" class="btn badge black" {{action 'black'}}>.</button>
-        {{/unless}}
-        {{#unless pinkOut}}
-        <button type="button" class="btn badge pink" {{action 'pink'}}>.</button>
-        {{/unless}}
-        {{#unless blueOut}}
-          <button type="button" class="btn badge blue" {{action 'blue'}}>.</button>
-        {{/unless}}
-        {{#unless brownOut}}
-          <button type="button" class="btn badge brown" {{action 'brown'}}>.</button>
-        {{/unless}}
-        {{#unless greenOut}}
-          <button type="button" class="btn badge green" {{action 'green'}}>.</button>
-        {{/unless}}
-        {{#unless yellowOut}}
-          <button type="button" class="btn badge yellow" {{action 'yellow'}}>.</button>
-        {{/unless}}
-      {{/if}}
-    </nav>
-  </header>
 
 <section>
+<!--p>ulti roja: {{isLastRed}} soloColor: {{soloColor}} tocaColor: {{tocaColor}}</p-->
+{{#if graphs3D}}
+  <article>
+{{#if puntosPosibles}}
+    <input type="radio" name="switch-color" id="cyan" checked>
+    <div class="chart">
+        <div class="bar bar-{{puntosPosiblesPorcentaje}} lightGray">
+            <div class="face top">
+{{#if numRojas}}
+                <div class="growing-bar">
+      <span class="badge red">{{numRojas}}</span>
+                </div>{{puntosPosibles}}
+{{else}}
+                <div class="growing-bar">
+                </div>{{puntosPosibles}}
+{{#unless yellowOut}}<span class="badge yellow">1</span>{{/unless}}
+{{#unless greenOut}}<span class="badge green">1</span>{{/unless}}
+{{#unless brownOut}}<span class="badge brown">1</span>{{/unless}}
+{{#unless blueOut}}<span class="badge blue">1</span>{{/unless}}
+{{#unless pinkOut}}<span class="badge pink">1</span>{{/unless}}
+{{#unless blackOut}}<span class="badge black">1</span>{{/unless}}
+{{/if}}
+            </div>
+            <div class="face side-0">
+                <div class="growing-bar"></div>
+            </div>
+            <div class="face floor">
+                <div class="growing-bar">{{puntosPosibles}}</div>
+            </div>
+            <div class="face side-a"></div>
+            <div class="face side-b"></div>
+            <div class="face side-1">
+                <div class="growing-bar"></div>
+            </div>
+        </div>
+    </div>
+{{/if}}
+  </article>
+{{else}}
   <article>
     <div class="progress">
       <div class="progress-bar progress-bar-info" role="progressbar"
@@ -157,13 +198,69 @@
       <span class="badge black">1</span>
     </div>
   </article>
-
+{{/if}}
 </section>
+
+
+
 {{/if}}
 
 <section>
   <article>
 {{#each breaks as |pastBreak|}}
+{{#if graphs3D}}
+
+{{#if pastBreak._1UpActive}}
+    <input type="radio" name="olor" id="red" checked>
+    <input type="radio" name="olor" id="lime">
+{{else}}
+    <input type="radio" name="olor" id="red">
+    <input type="radio" name="olor" id="lime" checked>
+{{/if}}
+
+    <div class="chart navy">
+        <div class="smallbar bar-{{pastBreak.total}} lightGray">
+            <div class="face top">
+                <div class="growing-bar">
+{{#if pastBreak.red}}
+<span class="badge red">{{pastBreak.red}}</span>
+{{/if}}
+{{#if pastBreak.yellow}}
+<span class="badge yellow">{{pastBreak.yellow}}</span>
+{{/if}}
+{{#if pastBreak.green}}
+<span class="badge green">{{pastBreak.green}}</span>
+{{/if}}
+{{#if pastBreak.brown}}
+<span class="badge brown">{{pastBreak.brown}}</span>
+{{/if}}
+{{#if pastBreak.blue}}
+<span class="badge blue">{{pastBreak.blue}}</span>
+{{/if}}
+{{#if pastBreak.pink}}
+<span class="badge pink">{{pastBreak.pink}}</span>
+{{/if}}
+{{#if pastBreak.black}}
+<span class="badge black">{{pastBreak.black}}</span>
+{{/if}}
+
+                </div>{{pastBreak.total}}
+            </div>
+            <div class="face side-0">
+                <div class="growing-bar"></div>
+            </div>
+            <div class="face floor">
+                <div class="growing-bar"></div>
+            </div>
+            <div class="face side-a"></div>
+            <div class="face side-b"></div>
+            <div class="face side-1">
+                <div class="growing-bar"></div>
+            </div>
+        </div>
+    </div>
+
+{{else}}
 <div class="progress">
   <div class="progress-bar progress-bar-info _{{pastBreak.player}}Up" role="progressbar"
     aria-valuenow="60" aria-valuemin="0" aria-valuemax="147"
@@ -192,8 +289,10 @@
 {{#if pastBreak.black}}
 <span class="badge black">{{pastBreak.black}}</span>
 {{/if}}
-
 </div>
+
+{{/if}}
+
 {{/each}}
 </article>
 </section>
@@ -202,136 +301,3 @@
 {{outlet}}
 </div>
 
-
-<!--div class="container">
-        <header>
-            <h1>frame <strong>SNOOKER</strong> progress</h1>
-            <p>... a pretty liquid APP progress-bar.</p>
-        </header>
-        <section>
-            <article>
-                <input type="radio" name="switch-color" id="red" checked>
-                <input type="radio" name="switch-color" id="cyan">
-                <input type="radio" name="switch-color" id="lime">
-                <div class="chart">
-                    <div class="bar bar-75 white">
-                        <div class="face top">
-                            <div class="growing-bar"></div>
-                        </div>
-                        <div class="face side-0">
-                            <div class="growing-bar"></div>
-                        </div>
-                        <div class="face floor">
-                            <div class="growing-bar"></div>
-                        </div>
-                        <div class="face side-a"></div>
-                        <div class="face side-b"></div>
-                        <div class="face side-1">
-                            <div class="growing-bar"></div>
-                        </div>
-                    </div>
-                </div>
-                <p>Try another color :)</p>
-                <nav class="actions">
-                    <label for="red">Red</label>
-                    <label for="cyan">Cyan</label>
-                    <label for="lime">Lime</label>
-                </nav>
-            </article>
-            <article>
-                <input type="radio" name="switch-pos" id="pos-0">
-                <input type="radio" name="switch-pos" id="pos-1">
-                <input type="radio" name="switch-pos" id="pos-2" checked>
-                <input type="radio" name="switch-pos" id="pos-3">
-                <div class="chart">
-                    <div class="bar bar-30 white">
-                        <div class="face top">
-                            <div class="growing-bar"></div>
-                        </div>
-                        <div class="face side-0">
-                            <div class="growing-bar"></div>
-                        </div>
-                        <div class="face floor">
-                            <div class="growing-bar"></div>
-                        </div>
-                        <div class="face side-a"></div>
-                        <div class="face side-b"></div>
-                        <div class="face side-1">
-                            <div class="growing-bar"></div>
-                        </div>
-                    </div>
-                </div>
-                <p>Try another position :)</p>
-                <nav class="actions">
-                    <label for="pos-0">1/4</label>
-                    <label for="pos-1">2/4</label>
-                    <label for="pos-2">3/4</label>
-                    <label for="pos-3">Full</label>
-                </nav>
-            </article>
-            <article>
-                <input type="radio" name="exercises" id="exercise-1" checked>
-                <input type="radio" name="exercises" id="exercise-2">
-                <input type="radio" name="exercises" id="exercise-3">
-                <input type="radio" name="exercises" id="exercise-4">
-                <div class="chart grid">
-                    <div class="exercise second">
-                        <div class="bar bar-45 navy lightGray-face">
-                            <div class="face top">
-                                <div class="growing-bar"></div>
-                            </div>
-                            <div class="face side-0">
-                                <div class="growing-bar"></div>
-                            </div>
-                            <div class="face floor">
-                                <div class="growing-bar"></div>
-                            </div>
-                            <div class="face side-a"></div>
-                            <div class="face side-b"></div>
-                            <div class="face side-1">
-                                <div class="growing-bar"></div>
-                            </div>
-                        </div>
-                        <div class="bar bar-80 yellow lightGray-face">
-                            <div class="face top">
-                                <div class="growing-bar"></div>
-                            </div>
-                            <div class="face side-0">
-                                <div class="growing-bar"></div>
-                            </div>
-                            <div class="face floor">
-                                <div class="growing-bar"></div>
-                            </div>
-                            <div class="face side-a"></div>
-                            <div class="face side-b"></div>
-                            <div class="face side-1">
-                                <div class="growing-bar"></div>
-                            </div>
-                        </div>
-                        <div class="bar bar-60 red lightGray-face">
-                            <div class="face top">
-                                <div class="growing-bar"></div>
-                            </div>
-                            <div class="face side-0">
-                                <div class="growing-bar"></div>
-                            </div>
-                            <div class="face floor">
-                                <div class="growing-bar"></div>
-                            </div>
-                            <div class="face side-a"></div>
-                            <div class="face side-b"></div>
-                            <div class="face side-1">
-                                <div class="growing-bar"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p><em>It's liquid</em>, so adding a bit of code you can make charts like this :P</p>
-                <nav class="actions">
-                    <label for="exercise-1">E-1</label>
-                    <label for="exercise-2">E-2</label>
-                    <label for="exercise-3">E-3</label>
-                    <label for="exercise-4">E-4</label>
-                </nav>
-            </article>
-        </section>

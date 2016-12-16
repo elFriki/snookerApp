@@ -4,6 +4,8 @@ const NUM_FRAMES = [1, 3, 5, 7, 9, 11 /*, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31
 
 export default Ember.Controller.extend({
 
+	graphs3D: true,
+
 	numFramesOptions: NUM_FRAMES,
 
 	numFrames: 0,
@@ -11,6 +13,8 @@ export default Ember.Controller.extend({
 	numRojas: 15,
 
 	isLastRed: false,
+
+	soloColor: false,
 
 	tocaColor: false,
 
@@ -61,7 +65,8 @@ export default Ember.Controller.extend({
 			return false;
 		}),
 
-	puntosPosibles: Ember.computed('numRojas',
+	puntosPosibles: Ember.computed('numRojas', 'yellowOut', 'greenOut',
+		'brownOut', 'blueOut', 'pinkOut', 'blackOut',
 		function() {
 			let posibles = this.numRojas * 8;
 			if (!this.get('blackOut')) {
@@ -79,7 +84,7 @@ export default Ember.Controller.extend({
 			if (!this.get('greenOut')) {
 				posibles = posibles + 3;
 			}
-			if (!this.get('yellowOut')) {
+			if (!this.yellowOut) {
 				posibles = posibles + 2;
 			}
 			return posibles;
@@ -115,10 +120,15 @@ export default Ember.Controller.extend({
 		} else {
 			this.set('score._2UpCurrentFrame', this.get('score._2UpCurrentFrame') + points);
 		}
-		if (this.get('numRojas') === 1) {
+		if (points > 1) {
+			this.set('tocaColor', true);
+		}
+		if (this.get('isLastRed')) {
+			this.set('soloColor', true);
+		}
+		if (this.get('numRojas') === 0) {
 			this.set('isLastRed', true);
 		}
-		this.toggleProperty('tocaColor');
 	},
 
 
@@ -134,43 +144,62 @@ export default Ember.Controller.extend({
 				this.set('numRojas', (this.get('numRojas') - 1));
 				this.set('currentBreak.red', (this.get('currentBreak.red') + 1));
 				this.set('currentBreak.total', (this.get('currentBreak.total') + 1));
+				this.set('tocaColor', true);
 				this.updateScore(1);
 			},
 
-			yellow() {
+			yellow(notLastRed) {
 				this.set('currentBreak.yellow', (this.get('currentBreak.yellow') + 1));
 				this.set('currentBreak.total', (this.get('currentBreak.total') + 2));
 				this.updateScore(2);
+				if (this.get('soloColor') && notLastRed) {
+					this.toggleProperty('yellowOut');
+				}
 			},
 
-			green() {
+			green(notLastRed) {
 				this.set('currentBreak.green', (this.get('currentBreak.green') + 1));
 				this.set('currentBreak.total', (this.get('currentBreak.total') + 3));
 				this.updateScore(3);
+				if (this.get('soloColor') && notLastRed) {
+					this.toggleProperty('greenOut');
+				}
 			},
 
-			brown() {
+			brown(notLastRed) {
 				this.set('currentBreak.brown', (this.get('currentBreak.brown') + 1));
 				this.set('currentBreak.total', (this.get('currentBreak.total') + 4));
 				this.updateScore(4);
+				if (this.get('soloColor') && notLastRed) {
+					this.toggleProperty('brownOut');
+				}
 			},
 
-			blue() {
+			blue(notLastRed) {
 				this.set('currentBreak.blue', (this.get('currentBreak.blue') + 1));
 				this.set('currentBreak.total', (this.get('currentBreak.total') + 5));
 				this.updateScore(5);
+				if (this.get('soloColor') && notLastRed) {
+					this.toggleProperty('blueOut');
+				}
 			},
 
-			pink() {
+			pink(notLastRed) {
 				this.set('currentBreak.pink', (this.get('currentBreak.pink') + 1));
 				this.set('currentBreak.total', (this.get('currentBreak.total') + 6));
 				this.updateScore(6);
+				if (this.get('soloColor') && notLastRed) {
+					this.toggleProperty('pinkOut');
+				}
 			},
 
-			black() {
+			black(notLastRed) {
 				this.set('currentBreak.black', (this.get('currentBreak.black') + 1));
 				this.set('currentBreak.total', (this.get('currentBreak.total') + 7));
 				this.updateScore(7);
+				if (this.get('soloColor') && notLastRed) {
+					this.toggleProperty('blackOut');
+				}
 			},
 
 			cambiaTurno(playerSelected) {
@@ -194,9 +223,6 @@ export default Ember.Controller.extend({
 				} else {
 					this.set('currentBreak._2UpActive', true);
 					this.set('currentBreak._1UpActive', false);
-				}
-				if (!this.get('quitaRojas')) {
-					this.set('tocaColor', false);
 				}
 			}
 
